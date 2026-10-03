@@ -1,0 +1,23 @@
+name: Validate SEO skill
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate skill structure
+        run: python scripts/validate_skill.py
+      - name: Compile helper scripts
+        run: python -m py_compile skills/seo/scripts/seo_scan.py skills/seo/scripts/repo_seo_scan.py skills/seo/scripts/site_check.py
+      - name: Smoke test repository scanner
+        run: python skills/seo/scripts/repo_seo_scan.py . --json > /tmp/repo-seo-scan.json
