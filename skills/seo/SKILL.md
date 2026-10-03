@@ -8,7 +8,7 @@ license: MIT
 compatibility: Agent Skills open format; optimized for Grok Build and portable to compatible agents.
 metadata:
   author: community
-  version: "1.1.0"
+  version: "1.2.0"
   category: seo
   short-description: Evidence-first SEO auditing and implementation
 ---
@@ -49,6 +49,7 @@ Choose the smallest workflow that satisfies the request:
 | `fix` | Apply SEO changes to code | `references/implementation.md` + the relevant specialist ref |
 | `launch` | Pre-launch SEO gate | `references/audit.md`, `references/implementation.md` |
 | `diagnose` | Traffic/index/ranking drop | `references/diagnostics.md` |
+| any | Report skeleton, launch checklist, JSON-LD/robots/redirect templates | `references/templates.md` |
 
 If no mode is named, infer it from the request. A broad “check my SEO” is `audit`; a concrete code change request is `fix`.
 
@@ -167,6 +168,7 @@ Priority is not the same as certainty. A potentially high-impact hypothesis with
 
 - `scripts/seo_scan.py` — lightweight URL/HTML SEO inspection with no third-party Python dependencies.
 - `scripts/repo_seo_scan.py` — lightweight repository pattern scan for common web SEO risks.
+- `scripts/seo_scan.py --file page.html` analyzes a saved HTML file offline.
 - `scripts/site_check.py` — robots.txt, sitemap, and HTTP→HTTPS redirect check.
 
 Use helper output as evidence, then inspect important findings directly before changing code.

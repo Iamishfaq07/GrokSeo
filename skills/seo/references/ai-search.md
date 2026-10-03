@@ -54,3 +54,13 @@ Do not fabricate “AI visibility scores.” Depending on available data, use:
 - conversion/engagement outcomes from those visits.
 
 AI answer outputs can vary by user, time, model, and query formulation. Treat sampled presence as observational, not guaranteed coverage.
+
+## AI crawler controls
+
+Distinguish crawlers by purpose, and verify current user-agent tokens in each vendor's own documentation before editing robots.txt:
+
+- **Search/answer retrieval** crawlers (appear in AI answers with citations) — blocking them removes eligibility to be cited.
+- **Model-training** crawlers/tokens — blocking is a content-licensing choice, not an SEO fix.
+- **User-initiated fetchers** — often do not follow robots.txt the same way; check vendor docs.
+
+Present this as a business trade-off with the user. Do not copy-paste long "block all AI bots" lists from the web, and never claim a robots.txt rule enforces access control.
