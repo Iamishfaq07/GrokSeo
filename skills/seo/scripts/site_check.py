@@ -42,23 +42,28 @@ def fetch(url, follow=True, method="GET", limit=2_000_000):
         return 0, {}, str(e), url
 
 
-def main():
-    ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    ap.add_argument("url")
-    ap.add_argument("--json", action="store_true")
-    ap.add_argument("--max-urls", type=int, default=25)
-    a = ap.parse_args()
+def parse_robots(text):
+    """Return (sitemap_urls, disallow_all) from robots.txt text."""
+    sitemaps = re.findall(r"(?im)^\s*sitemap:\s*(\S+)", text)
+    disallow_all = bool(re.search(r"(?im)^\s*disallow:\s*/\s*$", text))
+    return sitemaps, disallow_all
 
-    p = urllib.parse.urlparse(a.url if "//" in a.url else "https://" + a.url)
-    origin = f"{p.scheme}://{p.netloc}"
+
+def parse_sitemap(body):
+    """Return (is_index, locs) for sitemap XML text."""
+    return "<sitemapindex" in body, re.findall(r"<loc>\s*([^<\s]+)\s*</loc>", body)
+
+
+def check(origin, max_urls=25):
+    p = urllib.parse.urlparse(origin)
     out = {"origin": origin, "issues": [], "notes": []}
 
     st, _, robots, _ = fetch(origin + "/robots.txt")
     out["robots_status"] = st
-    sitemaps = re.findall(r"(?im)^\s*sitemap:\s*(\S+)", robots) if st == 200 else []
+    sitemaps, disallow_all = parse_robots(robots) if st == 200 else ([], False)
     if st != 200:
         out["issues"].append(f"robots.txt returned {st}")
-    elif re.search(r"(?im)^\s*disallow:\s*/\s*$", robots):
+    elif disallow_all:
         out["issues"].append("robots.txt contains 'Disallow: /' - verify it is not applied to all crawlers in production")
     if st == 200 and not sitemaps:
         out["notes"].append("No Sitemap: directive in robots.txt")
@@ -76,8 +81,8 @@ def main():
         if s != 200:
             out["issues"].append(f"Sitemap {sm} returned {s}")
             continue
-        locs = re.findall(r"<loc>\s*([^<\s]+)\s*</loc>", body)
-        if "<sitemapindex" in body:
+        is_index, locs = parse_sitemap(body)
+        if is_index:
             queue += locs
         else:
             urls += locs
@@ -85,12 +90,12 @@ def main():
     out["sitemap_url_count"] = len(urls)
 
     bad = []
-    for u in urls[: a.max_urls]:
-        s, h, _, final = fetch(u, follow=False, method="HEAD")
+    for u in urls[:max_urls]:
+        s, h, _, _ = fetch(u, follow=False, method="HEAD")
         if s != 200:
             bad.append({"url": u, "status": s, "location": h.get("Location")})
     if bad:
-        out["issues"].append(f"{len(bad)} of first {min(len(urls), a.max_urls)} sitemap URLs are not 200")
+        out["issues"].append(f"{len(bad)} of first {min(len(urls), max_urls)} sitemap URLs are not 200")
     out["sitemap_non_200"] = bad
 
     if p.scheme == "https":
@@ -98,11 +103,23 @@ def main():
         out["http_to_https"] = {"status": s, "location": h.get("Location")}
         if not (300 <= s < 400 and (h.get("Location") or "").startswith("https://")):
             out["issues"].append("http:// does not redirect to https://")
+    return out
+
+
+def main():
+    ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    ap.add_argument("url")
+    ap.add_argument("--json", action="store_true")
+    ap.add_argument("--max-urls", type=int, default=25)
+    a = ap.parse_args()
+
+    p = urllib.parse.urlparse(a.url if "//" in a.url else "https://" + a.url)
+    out = check(f"{p.scheme}://{p.netloc}", a.max_urls)
 
     if a.json:
         print(json.dumps(out, indent=2))
     else:
-        print(f"Origin: {origin}\nrobots.txt: {out['robots_status']}\nSitemap URLs found: {len(urls)}")
+        print(f"Origin: {out['origin']}\nrobots.txt: {out['robots_status']}\nSitemap URLs found: {out['sitemap_url_count']}")
         for i in out["issues"]:
             print("ISSUE:", i)
         for n in out["notes"]:

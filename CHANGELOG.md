@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.4.0 - 2026-10-09
+
+- Added `llms_txt.py` (optional, experimental `llms.txt` drafter).
+- Refactored `site_check.py` into testable functions; added unit and local-server integration tests.
+- Added `evals/README.md` with 10 behavior-check prompts.
+
 ## 1.3.0 - 2026-10-09
 
 - Added `migration` mode and `references/migration.md` (classification, baseline, launch, monitoring, failure patterns).
