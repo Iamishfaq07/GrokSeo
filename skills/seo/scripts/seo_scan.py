@@ -39,6 +39,8 @@ class PageParser(HTMLParser):
         self.jsonld = []
         self._script_type = None
         self._script_buf = []
+        self._heading_open = False
+        self.html_lang = ""
 
     def handle_starttag(self, tag, attrs):
         d = {k.lower(): (v or "") for k, v in attrs}
@@ -51,8 +53,11 @@ class PageParser(HTMLParser):
             self.links.append(d)
         elif tag == "img":
             self.images.append(d)
+        elif tag == "html":
+            self.html_lang = d.get("lang", "")
         elif tag in {"h1", "h2", "h3", "h4", "h5", "h6"}:
             self.headings.append((tag, []))
+            self._heading_open = True
         elif tag == "link":
             rel = {x.strip().lower() for x in d.get("rel", "").split()}
             if "canonical" in rel and d.get("href"):
@@ -68,6 +73,8 @@ class PageParser(HTMLParser):
         tag = tag.lower()
         if tag == "title":
             self._in_title = False
+        elif tag in {"h1", "h2", "h3", "h4", "h5", "h6"}:
+            self._heading_open = False
         elif tag == "script" and self._script_type == "application/ld+json":
             raw = "".join(self._script_buf).strip()
             if raw:
@@ -78,7 +85,7 @@ class PageParser(HTMLParser):
     def handle_data(self, data):
         if self._in_title:
             self.title += data
-        if self.headings and self.lasttag in {"h1", "h2", "h3", "h4", "h5", "h6"}:
+        if self._heading_open and self.headings:
             self.headings[-1][1].append(data)
         if self._script_type == "application/ld+json":
             self._script_buf.append(data)
@@ -134,7 +141,13 @@ def scan(url: str):
     if m:
         enc = m.group(1)
     html = r["body"].decode(enc, errors="replace")
+    analyze(html, final_url, r["headers"], out)
+    return out
 
+
+def analyze(html: str, final_url: str, headers: dict, out: dict):
+    """Analyze HTML text. Separated from fetching so it can be unit-tested offline."""
+    r = {"headers": headers}
     p = PageParser()
     try:
         p.feed(html)
@@ -174,6 +187,24 @@ def scan(url: str):
         out["info"]["multiple_h1_note"] = "Multiple H1s are not inherently an SEO error; verify document clarity."
     if not desc:
         out["warnings"].append("No meta description found")
+    if title and len(title) > 70:
+        out["warnings"].append(f"Title is {len(title)} chars; likely to be truncated in results (heuristic, not a rule)")
+    if desc and len(desc) > 200:
+        out["warnings"].append(f"Meta description is {len(desc)} chars; search engines may rewrite or truncate it")
+    if not meta_value(p.meta, name="viewport"):
+        out["warnings"].append("No meta viewport found; verify mobile rendering")
+    if not p.html_lang:
+        out["warnings"].append("<html> has no lang attribute")
+    if p.canonicals:
+        c = urllib.parse.urljoin(final_url, p.canonicals[0])
+        if urllib.parse.urlparse(c).scheme != urllib.parse.urlparse(final_url).scheme:
+            out["warnings"].append(f"Canonical scheme differs from page URL: {c}")
+    hreflangs = [a for a in p.alternates if a.get("hreflang")]
+    out["info"]["hreflang_count"] = len(hreflangs)
+    if hreflangs and not any(a.get("hreflang", "").lower() == "x-default" for a in hreflangs):
+        out["warnings"].append("hreflang present without x-default (optional; verify intent)")
+    out["info"]["open_graph"] = bool(meta_value(p.meta, prop="og:title"))
+    out["info"]["twitter_card"] = bool(meta_value(p.meta, name="twitter:card"))
 
     directives = " ".join([robots, googlebot, r["headers"].get("X-Robots-Tag", "")]).lower()
     if "noindex" in directives:
@@ -243,10 +274,16 @@ def render_text(result):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("url")
+    ap.add_argument("url", help="URL to fetch, or a local HTML file path with --file")
     ap.add_argument("--json", action="store_true")
+    ap.add_argument("--file", action="store_true", help="treat the argument as a local HTML file (offline analysis)")
     args = ap.parse_args()
-    result = scan(args.url)
+    if args.file:
+        with open(args.url, encoding="utf-8", errors="replace") as fh:
+            result = {"input_url": args.url, "errors": [], "warnings": [], "info": {}}
+            analyze(fh.read(), "https://example.invalid/" , {}, result)
+    else:
+        result = scan(args.url)
     if args.json:
         print(json.dumps(result, indent=2, ensure_ascii=False))
     else:

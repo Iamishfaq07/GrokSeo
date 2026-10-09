@@ -17,6 +17,7 @@ Run before opening a PR:
 ```bash
 python scripts/validate_skill.py
 python -m py_compile skills/seo/scripts/*.py
+python -m unittest discover -s tests
 python skills/seo/scripts/repo_seo_scan.py . --json
 ```
 

@@ -58,6 +58,7 @@ Skill-only install (no plugin): copy `skills/seo/` to `<project>/.grok/skills/se
 | `local` / `ecommerce` / `international` | Specialized SEO | `specialized-seo.md` |
 | `code` / `fix` / `launch` | Review, implement, pre-launch gate | `implementation.md` |
 | `diagnose` | Traffic/index/ranking drops | `diagnostics.md` |
+| templates | Report, launch gate, JSON-LD, robots, redirects | `templates.md` |
 
 ## Output format
 
@@ -67,6 +68,8 @@ Audits return an executive summary, findings (priority, confidence, evidence, wh
 
 ```bash
 python skills/seo/scripts/seo_scan.py https://example.com --json   # single-page HTML/SEO inspection
+python skills/seo/scripts/seo_scan.py page.html --file             # same checks on a saved HTML file
+python skills/seo/scripts/build_scan.py dist/                      # site-wide checks on built HTML (dupes, missing tags, broken links)
 python skills/seo/scripts/site_check.py https://example.com        # robots.txt, sitemaps, HTTP→HTTPS
 python skills/seo/scripts/repo_seo_scan.py . --json                # repo pattern scan for SEO risks
 ```
@@ -87,6 +90,7 @@ scripts/validate_skill.py  structure validator (run in CI)
 ```bash
 python scripts/validate_skill.py
 python -m py_compile skills/seo/scripts/*.py
+python -m unittest discover -s tests
 ```
 
 See [CONTRIBUTING.md](CONTRIBUTING.md), [SECURITY.md](SECURITY.md), and [CHANGELOG.md](CHANGELOG.md).
