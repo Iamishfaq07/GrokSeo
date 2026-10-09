@@ -4,7 +4,7 @@ An evidence-first SEO skill for [Grok Build](https://x.ai) (and any Agent Skills
 
 ## Features
 
-- **15 workflows** behind one command: audit, page, technical, content, schema, keywords, competitors, ai, local, ecommerce, international, code, fix, launch, diagnose.
+- **16 workflows** behind one command: audit, page, technical, content, schema, keywords, competitors, ai, local, ecommerce, international, code, fix, launch, migration, diagnose.
 - **Evidence over opinion** — findings carry priority (P0–P3), confidence, evidence, fix, and a verification step. Nothing is marked "passed" unless checked.
 - **Progressive disclosure** — a small router `SKILL.md` loads only the reference files a task needs.
 - **Current-rules discipline** — time-sensitive claims (rich results, AI Overviews, CWV, spam policy) are verified against primary sources.
@@ -43,6 +43,7 @@ Skill-only install (no plugin): copy `skills/seo/` to `<project>/.grok/skills/se
 /seo code .
 /seo fix the technical SEO issues in this project
 /seo launch .
+/seo migration plan our move from WordPress to Next.js
 /seo diagnose organic traffic dropped 30% after the migration
 ```
 
@@ -58,6 +59,7 @@ Skill-only install (no plugin): copy `skills/seo/` to `<project>/.grok/skills/se
 | `local` / `ecommerce` / `international` | Specialized SEO | `specialized-seo.md` |
 | `code` / `fix` / `launch` | Review, implement, pre-launch gate | `implementation.md` |
 | `diagnose` | Traffic/index/ranking drops | `diagnostics.md` |
+| `migration` | Replatform, redesign, domain/URL moves | `migration.md` |
 | templates | Report, launch gate, JSON-LD, robots, redirects | `templates.md` |
 
 ## Output format
@@ -82,6 +84,8 @@ These are lightweight evidence sources — not a substitute for rendering, Searc
 skills/seo/SKILL.md        router + principles + output contract
 skills/seo/references/     focused specialist guidance
 skills/seo/scripts/        stdlib-only helpers
+examples/                  sample audit output format
+tests/                     unit tests for the scripts
 scripts/validate_skill.py  structure validator (run in CI)
 ```
 

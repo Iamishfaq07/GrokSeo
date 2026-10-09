@@ -27,6 +27,17 @@ Start with dates, affected segments, and direct evidence.
 - Impressions down for one topic -> demand, relevance, competition, or content quality may be involved.
 - Indexed count changes without performance impact -> may be normal URL cleanup; evaluate affected canonical pages, not just count.
 
+## Quick decision aid
+
+| Observation | First suspects | First check |
+|---|---|---|
+| Drop starts the day of a deploy/migration | noindex, robots, canonicals, redirects, rendering | `migration.md`; fetch live HTML and headers for a lost URL |
+| Sharp drop on one date, no release | tracking change, outage, manual/security issue, confirmed update | analytics tag audit; Search Console messages; official update dashboards |
+| Gradual decline over months | content freshness/quality, competitors, demand, internal-link decay | query-level comparison against SERP leaders |
+| Indexing errors rising | soft 404s, duplicate/alternate pages, crawl traps, server errors | Page Indexing report grouped by reason, then sample URLs |
+| Crawled but not indexed at scale | low unique value, duplication, weak internal links | compare indexed vs not-indexed page templates |
+| Clicks down, impressions flat | SERP features, snippet changes, rank slips, AI answers | position and CTR by query cohort |
+
 ## Output
 
 State:
