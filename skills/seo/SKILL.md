@@ -8,7 +8,7 @@ license: MIT
 compatibility: Agent Skills open format; optimized for Grok Build and portable to compatible agents.
 metadata:
   author: community
-  version: "1.4.0"
+  version: "1.4.1"
   category: seo
   short-description: Evidence-first SEO auditing and implementation
 ---

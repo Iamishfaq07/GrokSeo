@@ -60,6 +60,10 @@ def check(origin, max_urls=25):
 
     st, _, robots, _ = fetch(origin + "/robots.txt")
     out["robots_status"] = st
+    if st == 0:
+        out["issues"].append(f"Could not connect to {origin} ({robots}); skipped remaining checks")
+        out["sitemaps_checked"], out["sitemap_url_count"], out["sitemap_non_200"] = [], 0, []
+        return out
     sitemaps, disallow_all = parse_robots(robots) if st == 200 else ([], False)
     if st != 200:
         out["issues"].append(f"robots.txt returned {st}")

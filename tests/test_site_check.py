@@ -66,6 +66,12 @@ class LiveTests(unittest.TestCase):
         self.assertIn("not 200", text)
         self.assertEqual(res["sitemap_non_200"][0]["status"], 404)
 
+    def test_unreachable_origin_reports_one_issue(self):
+        res = site_check.check("http://127.0.0.1:1")
+        self.assertEqual(res["robots_status"], 0)
+        self.assertEqual(len(res["issues"]), 1)
+        self.assertIn("Could not connect", res["issues"][0])
+
 
 if __name__ == "__main__":
     unittest.main()

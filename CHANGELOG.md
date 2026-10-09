@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.4.1 - 2026-10-09
+
+- `site_check.py`: report a single clear "could not connect" issue instead of misleading robots/sitemap/redirect errors when the origin is unreachable.
+
 ## 1.4.0 - 2026-10-09
 
 - Added `llms_txt.py` (optional, experimental `llms.txt` drafter).
