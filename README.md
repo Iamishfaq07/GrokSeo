@@ -69,6 +69,7 @@ Audits return an executive summary, findings (priority, confidence, evidence, wh
 ```bash
 python skills/seo/scripts/seo_scan.py https://example.com --json   # single-page HTML/SEO inspection
 python skills/seo/scripts/seo_scan.py page.html --file             # same checks on a saved HTML file
+python skills/seo/scripts/build_scan.py dist/                      # site-wide checks on built HTML (dupes, missing tags, broken links)
 python skills/seo/scripts/site_check.py https://example.com        # robots.txt, sitemaps, HTTP→HTTPS
 python skills/seo/scripts/repo_seo_scan.py . --json                # repo pattern scan for SEO risks
 ```

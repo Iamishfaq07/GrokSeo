@@ -20,6 +20,6 @@ jobs:
       - name: Unit tests
         run: python -m unittest discover -s tests
       - name: Compile helper scripts
-        run: python -m py_compile skills/seo/scripts/seo_scan.py skills/seo/scripts/repo_seo_scan.py skills/seo/scripts/site_check.py
+        run: python -m py_compile skills/seo/scripts/seo_scan.py skills/seo/scripts/repo_seo_scan.py skills/seo/scripts/site_check.py skills/seo/scripts/build_scan.py
       - name: Smoke test repository scanner
         run: python skills/seo/scripts/repo_seo_scan.py . --json > /tmp/repo-seo-scan.json

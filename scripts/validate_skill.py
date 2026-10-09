@@ -42,7 +42,7 @@ def main():
     missing = sorted({r for r in refs if not (SKILL.parent / r).exists()})
     if missing:
         fail("missing referenced files: " + ", ".join(missing))
-    for script in ["scripts/seo_scan.py", "scripts/repo_seo_scan.py", "scripts/site_check.py"]:
+    for script in ["scripts/seo_scan.py", "scripts/repo_seo_scan.py", "scripts/site_check.py", "scripts/build_scan.py"]:
         if not (SKILL.parent / script).exists():
             fail(f"missing {script}")
     print("SEO skill validation passed")

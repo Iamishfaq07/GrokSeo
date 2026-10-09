@@ -88,6 +88,21 @@ Prefer the framework metadata APIs (`metadata` / `generateMetadata`) and route h
 ### Next.js Pages Router
 Use the framework head mechanism consistently and centralize repeated metadata. Ensure dynamic pages resolve canonical metadata during SSR/SSG when intended.
 
+### Nuxt
+Use `useSeoMeta` / `useHead` in shared layouts and per-page composables; set `site.url` (or the SEO module equivalent) so canonicals and sitemaps use the production origin. Verify with `nuxt generate` or a production build, not dev mode.
+
+### SvelteKit
+Put per-route `<svelte:head>` data behind `load` results so it renders on the server; generate sitemap/robots via `+server.ts` endpoints; return real `error(404)` for missing params.
+
+### Astro
+Centralize `<head>` in a layout component; set `site` in `astro.config` for canonical/sitemap generation; prefer static output and inspect `dist/` (try `build_scan.py dist/`).
+
+### WordPress
+Prefer one established SEO plugin over hand-edited theme tags; avoid duplicate title/canonical output from theme plus plugin; check that "discourage search engines" is off in production and that attachment/tag archives follow an intentional indexing policy.
+
+### Shopify
+Edit theme Liquid for titles/meta/schema rather than injecting via JS; handle duplicate product URLs via the canonical Shopify emits (collection-scoped product paths); keep variant and filter URLs from creating thin indexable duplicates.
+
 ### SPA-only React/Vue/etc.
 Assess whether prerendering/SSR is warranted for public search landing pages. If remaining CSR, verify crawler-rendered content, real statuses via server/fallback rules, and crawlable navigation.
 
