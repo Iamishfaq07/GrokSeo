@@ -72,6 +72,7 @@ Audits return an executive summary, findings (priority, confidence, evidence, wh
 python skills/seo/scripts/seo_scan.py https://example.com --json   # single-page HTML/SEO inspection
 python skills/seo/scripts/seo_scan.py page.html --file             # same checks on a saved HTML file
 python skills/seo/scripts/build_scan.py dist/                      # site-wide checks on built HTML (dupes, missing tags, broken links)
+python skills/seo/scripts/llms_txt.py dist/ --base-url https://example.com --name "Example"   # optional, experimental llms.txt draft
 python skills/seo/scripts/site_check.py https://example.com        # robots.txt, sitemaps, HTTP→HTTPS
 python skills/seo/scripts/repo_seo_scan.py . --json                # repo pattern scan for SEO risks
 ```
@@ -85,6 +86,7 @@ skills/seo/SKILL.md        router + principles + output contract
 skills/seo/references/     focused specialist guidance
 skills/seo/scripts/        stdlib-only helpers
 examples/                  sample audit output format
+evals/                     behavior-check prompts for manual testing
 tests/                     unit tests for the scripts
 scripts/validate_skill.py  structure validator (run in CI)
 ```

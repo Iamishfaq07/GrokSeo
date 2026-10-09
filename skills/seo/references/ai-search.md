@@ -41,7 +41,7 @@ Useful original images, charts, video, transcripts, and demonstrations can impro
 
 Treat as optional/experimental unless the target platform explicitly documents support. Do not call it a Google ranking factor or requirement for AI Overviews/AI Mode.
 
-If the user wants one, make it concise, factual, maintainable, and secondary to normal crawl/index/content quality.
+If the user wants one, `scripts/llms_txt.py` can draft it from built HTML; make it concise, factual, maintainable, and secondary to normal crawl/index/content quality.
 
 ## Measuring AI visibility
 

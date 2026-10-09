@@ -8,7 +8,7 @@ license: MIT
 compatibility: Agent Skills open format; optimized for Grok Build and portable to compatible agents.
 metadata:
   author: community
-  version: "1.3.0"
+  version: "1.4.0"
   category: seo
   short-description: Evidence-first SEO auditing and implementation
 ---
@@ -171,6 +171,7 @@ Priority is not the same as certainty. A potentially high-impact hypothesis with
 - `scripts/repo_seo_scan.py` — lightweight repository pattern scan for common web SEO risks.
 - `scripts/seo_scan.py --file page.html` analyzes a saved HTML file offline.
 - `scripts/build_scan.py <dir>` scans built/static HTML for missing or duplicate titles/descriptions, missing canonicals/H1s, noindex pages, and broken internal links.
+- `scripts/llms_txt.py <dir> --base-url URL --name NAME` drafts an optional `llms.txt` from built HTML (experimental; see `references/ai-search.md`).
 - `scripts/site_check.py` — robots.txt, sitemap, and HTTP→HTTPS redirect check.
 
 Use helper output as evidence, then inspect important findings directly before changing code.
