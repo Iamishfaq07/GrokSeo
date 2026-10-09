@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.3.0 - 2026-10-09
+
+- Added `migration` mode and `references/migration.md` (classification, baseline, launch, monitoring, failure patterns).
+- Added a symptom→suspect decision table to `references/diagnostics.md`.
+- Added publisher/news and SaaS/B2B sections to `references/specialized-seo.md`.
+- Added example outputs in `examples/`.
+
 ## 1.2.0 - 2026-10-03
 
 - `seo_scan.py`: fixed H1 text capturing trailing text, added viewport/lang/hreflang/Open Graph/length checks, and `--file` offline mode.

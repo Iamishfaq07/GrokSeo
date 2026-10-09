@@ -1,14 +1,14 @@
 ---
 name: seo
 description: Audit, plan, implement, and verify SEO for websites and web codebases. Use for technical SEO, on-page/content SEO, structured data, Core Web Vitals, crawl/indexing, internal linking, sitemaps, international/local/e-commerce SEO, AI-search visibility, launch checks, traffic-drop diagnosis, or SEO fixes in code.
-when-to-use: SEO audit, technical SEO, on-page SEO, schema, sitemap, robots.txt, canonical, hreflang, Core Web Vitals, AI search, GEO, AEO, local SEO, ecommerce SEO, search visibility, indexing, ranking drop, SEO fix, pre-launch SEO
-argument-hint: "[audit|page|technical|content|schema|keywords|competitors|ai|local|ecommerce|international|code|fix|launch|diagnose] [URL|path|topic]"
+when-to-use: site migration, redesign, replatform, SEO audit, technical SEO, on-page SEO, schema, sitemap, robots.txt, canonical, hreflang, Core Web Vitals, AI search, GEO, AEO, local SEO, ecommerce SEO, search visibility, indexing, ranking drop, SEO fix, pre-launch SEO
+argument-hint: "[migration|audit|page|technical|content|schema|keywords|competitors|ai|local|ecommerce|international|code|fix|launch|diagnose] [URL|path|topic]"
 user-invocable: true
 license: MIT
 compatibility: Agent Skills open format; optimized for Grok Build and portable to compatible agents.
 metadata:
   author: community
-  version: "1.2.0"
+  version: "1.3.0"
   category: seo
   short-description: Evidence-first SEO auditing and implementation
 ---
@@ -49,6 +49,7 @@ Choose the smallest workflow that satisfies the request:
 | `fix` | Apply SEO changes to code | `references/implementation.md` + the relevant specialist ref |
 | `launch` | Pre-launch SEO gate | `references/audit.md`, `references/implementation.md` |
 | `diagnose` | Traffic/index/ranking drop | `references/diagnostics.md` |
+| `migration` | Replatform, redesign, domain/URL change, content pruning | `references/migration.md`, `references/templates.md` |
 | any | Report skeleton, launch checklist, JSON-LD/robots/redirect templates | `references/templates.md` |
 
 If no mode is named, infer it from the request. A broad “check my SEO” is `audit`; a concrete code change request is `fix`.

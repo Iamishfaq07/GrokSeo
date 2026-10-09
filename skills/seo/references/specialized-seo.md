@@ -32,6 +32,14 @@ Audit:
 
 Do not canonicalize all variants/categories to a parent if distinct pages legitimately serve distinct user/search needs.
 
+## Publisher / news SEO
+
+Audit author and date transparency, article structured data matching visible bylines, update/correction practices, clear separation of sponsored content, paginated or infinite-scroll crawlability, AMP-free performance, and sitemap freshness for time-sensitive content. Verify current news-specific eligibility documentation before advising on Top Stories or news sitemaps.
+
+## SaaS / B2B SEO
+
+Audit product, use-case, integration, and comparison pages for distinct intent coverage; docs and changelog crawlability; gated-content indexation policy; programmatic page quality (unique data per page, no thin templated sprawl); and internal links from high-authority content to conversion pages.
+
 ## International and multilingual SEO
 
 Audit:
